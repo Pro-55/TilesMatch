@@ -6,6 +6,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import androidx.navigation.fragment.FragmentNavigatorExtras
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.example.tilesmatch.R
 import com.example.tilesmatch.databinding.FragmentOptionsBinding
@@ -43,7 +45,8 @@ class OptionsFragment : BaseFragment() {
         adapter = OptionsAdapter()
         adapter?.setListener(object : OptionsAdapter.Listener {
             override fun onItemClick(url: String?) {
-                Log.d(TAG, "TestLog: $url")
+                val action = OptionsFragmentDirections.navigateOptionsToGame()
+                findNavController().navigate(action)
             }
         })
         binding.recyclerOptions.adapter = adapter
