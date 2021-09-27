@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">TilesMatch</string>
+
+    <string name="btn_select">Select</string>
+
+    <string name="cd_select_button">Select Button</string>
 </resources>
