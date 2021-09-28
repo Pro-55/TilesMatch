@@ -6,19 +6,19 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="@dimen/dimen_8dp">
+        android:padding="0.5dp">
 
-        <TextView
-            android:id="@+id/txt_id"
+        <ImageView
+            android:id="@+id/img_tile"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:gravity="center"
+            android:contentDescription="@string/cd_game_tile"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintDimensionRatio="H,1:1"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tool:text="55" />
+            app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

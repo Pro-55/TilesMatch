@@ -14,7 +14,7 @@ import com.example.tilesmatch.R
 import com.example.tilesmatch.databinding.LayoutTilesItemBinding
 import com.example.tilesmatch.enums.MoveDirection
 import com.example.tilesmatch.models.Tile
-import kotlin.math.abs
+import com.example.tilesmatch.utils.TouchHelperUtils
 
 class TilesAdapter : ListAdapter<Tile, TilesAdapter.ViewHolder>(TileDC()) {
 
@@ -31,7 +31,7 @@ class TilesAdapter : ListAdapter<Tile, TilesAdapter.ViewHolder>(TileDC()) {
     )
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) =
-        holder.bind(position)
+        holder.bind(getItem(position))
 
     fun setListener(listener: Listener?) {
         this.listener = listener
@@ -43,39 +43,30 @@ class TilesAdapter : ListAdapter<Tile, TilesAdapter.ViewHolder>(TileDC()) {
         private val binding: LayoutTilesItemBinding
     ) : RecyclerView.ViewHolder(binding.root) {
         @SuppressLint("ClickableViewAccessibility")
-        fun bind(position: Int) = with(binding) {
-            val tile = getItem(position)
+        fun bind(tile: Tile) = with(binding) {
             val bitmap = tile.bitmap
             val isBlank = bitmap == null
             @ColorRes val colorRes =
                 if (isBlank) android.R.color.holo_blue_light else android.R.color.holo_green_light
-            txtId.apply {
-                text = "${tile._id}"
-                setBackgroundColor(ResourcesCompat.getColor(resources, colorRes, null))
-            }
+            imgTile.setBackgroundColor(ResourcesCompat.getColor(root.resources, colorRes, null))
             var x = 0F
             var y = 0F
-            if (isBlank) root.setOnTouchListener { _, mE ->
-                when (mE.action) {
-                    MotionEvent.ACTION_DOWN -> {
-                        x = mE.rawX
-                        y = mE.rawY
-                    }
-                    MotionEvent.ACTION_CANCEL -> {
-                        val dx = mE.rawX - x
-                        val dy = mE.rawY - y
-                        val isXNegative = dx < 0
-                        val isYNegative = dy < 0
-                        val isHorizontal = abs(dx) > abs(dy)
-                        val direction = if (isHorizontal) {
-                            if (isXNegative) MoveDirection.LEFT else MoveDirection.RIGHT
-                        } else {
-                            if (isYNegative) MoveDirection.UP else MoveDirection.DOWN
+            if (!isBlank) {
+                root.setOnTouchListener { _, mE ->
+                    when (mE.action) {
+                        MotionEvent.ACTION_DOWN -> {
+                            x = mE.rawX
+                            y = mE.rawY
                         }
-                        listener?.onMove(position, direction)
+                        MotionEvent.ACTION_CANCEL, MotionEvent.ACTION_UP -> listener?.onMove(
+                            absoluteAdapterPosition,
+                            TouchHelperUtils.getMoveDirection(mE, x, y)
+                        )
                     }
+                    true
                 }
-                true
+            } else {
+                root.setOnTouchListener(null)
             }
         }
     }
@@ -93,6 +84,6 @@ class TilesAdapter : ListAdapter<Tile, TilesAdapter.ViewHolder>(TileDC()) {
         override fun areContentsTheSame(
             oldItem: Tile,
             newItem: Tile
-        ): Boolean = oldItem == newItem
+        ): Boolean = oldItem._id == newItem._id
     }
 }
