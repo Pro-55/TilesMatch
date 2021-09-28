@@ -3,7 +3,9 @@ plugins {
         id("com.android.application")
         kotlin("android")
         kotlin("kapt")
+        id("androidx.navigation.safeargs")
     }
+    id("kotlin-android")
 }
 
 android {
@@ -63,6 +65,16 @@ dependencies {
 
     // Constraint Layout
     implementation("androidx.constraintlayout:constraintlayout:2.1.1")
+
+    // Fragment
+    implementation("androidx.fragment:fragment-ktx:1.3.6")
+
+    // Navigation Component
+    implementation("androidx.navigation:navigation-fragment-ktx:2.3.5")
+    implementation("androidx.navigation:navigation-ui-ktx:2.3.5")
+
+    // RecyclerView
+    implementation("androidx.recyclerview:recyclerview:1.2.1")
 
     // Test
     testImplementation("junit:junit:4.13.2")
