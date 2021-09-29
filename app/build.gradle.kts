@@ -3,9 +3,10 @@ plugins {
         id("com.android.application")
         kotlin("android")
         kotlin("kapt")
+        id("org.jetbrains.kotlin.plugin.parcelize")
         id("androidx.navigation.safeargs")
+        id("dagger.hilt.android.plugin")
     }
-    id("kotlin-android")
 }
 
 android {
@@ -75,6 +76,25 @@ dependencies {
 
     // RecyclerView
     implementation("androidx.recyclerview:recyclerview:1.2.1")
+
+    // Glide
+    implementation("com.github.bumptech.glide:glide:4.12.0")
+    implementation("androidx.legacy:legacy-support-v4:1.0.0")
+    kapt("com.github.bumptech.glide:compiler:4.12.0")
+
+    // Coroutines
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.1")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.1")
+
+    // Hilt DI
+    implementation("com.google.dagger:hilt-android:2.38.1")
+    kapt("com.google.dagger:hilt-compiler:2.38.1")
+
+    // Hilt ViewModel
+    implementation("androidx.hilt:hilt-lifecycle-viewmodel:1.0.0-alpha03")
+
+    // Gson
+    implementation("com.google.code.gson:gson:2.8.8")
 
     // Test
     testImplementation("junit:junit:4.13.2")
