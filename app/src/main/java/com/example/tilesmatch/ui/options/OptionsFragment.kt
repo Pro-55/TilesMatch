@@ -17,6 +17,7 @@ import com.example.tilesmatch.models.Option
 import com.example.tilesmatch.models.Resource
 import com.example.tilesmatch.models.Status
 import com.example.tilesmatch.utils.extensions.glide
+import com.example.tilesmatch.utils.extensions.showShortSnackBar
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -69,7 +70,7 @@ class OptionsFragment : BaseFragment() {
                 binding.efabSelect.apply { if (newState == RecyclerView.SCROLL_STATE_IDLE) extend() else shrink() }
             }
         })
-        binding.efabSelect.setOnClickListener { }
+        binding.efabSelect.setOnClickListener { showShortSnackBar("Not there yet!") }
     }
 
     private fun handleOptionsResource(resource: Resource<List<Option>>) {
