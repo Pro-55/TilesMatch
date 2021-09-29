@@ -14,6 +14,8 @@ import com.example.tilesmatch.databinding.LayoutTilesItemBinding
 import com.example.tilesmatch.enums.MoveDirection
 import com.example.tilesmatch.models.Tile
 import com.example.tilesmatch.utils.TouchHelperUtils
+import com.example.tilesmatch.utils.extensions.gone
+import com.example.tilesmatch.utils.extensions.visible
 
 class TilesAdapter(
     private val glide: RequestManager
@@ -53,6 +55,12 @@ class TilesAdapter(
             var x = 0F
             var y = 0F
             if (!isBlank) {
+                binding.txtTileId.apply {
+                    if (tile.shouldShowId) {
+                        visible()
+                        text = "${tile._id + 1}"
+                    } else gone()
+                }
                 root.setOnTouchListener { _, mE ->
                     when (mE.action) {
                         MotionEvent.ACTION_DOWN -> {
