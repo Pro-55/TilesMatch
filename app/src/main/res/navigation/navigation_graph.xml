@@ -17,5 +17,9 @@
         android:id="@+id/gameFragment"
         android:name="com.example.tilesmatch.ui.game.GameFragment"
         android:label="GameFragment"
-        tools:layout="@layout/fragment_game" />
+        tools:layout="@layout/fragment_game">
+        <argument
+            android:name="option"
+            app:argType="com.example.tilesmatch.models.Option" />
+    </fragment>
 </navigation>

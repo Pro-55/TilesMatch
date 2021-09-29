@@ -2,17 +2,19 @@ package com.example.tilesmatch.ui.options
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.annotation.ColorRes
-import androidx.core.content.res.ResourcesCompat
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.RequestManager
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.example.tilesmatch.R
 import com.example.tilesmatch.databinding.LayoutOptionsItemBinding
 import com.example.tilesmatch.models.Option
 
-class OptionsAdapter : ListAdapter<Option, OptionsAdapter.ViewHolder>(OptionDC()) {
+class OptionsAdapter(
+    private val glide: RequestManager
+) : ListAdapter<Option, OptionsAdapter.ViewHolder>(OptionDC()) {
 
     // Global
     private val TAG = OptionsAdapter::class.java.simpleName
@@ -39,18 +41,23 @@ class OptionsAdapter : ListAdapter<Option, OptionsAdapter.ViewHolder>(OptionDC()
         private val binding: LayoutOptionsItemBinding
     ) : RecyclerView.ViewHolder(binding.root) {
         fun bind(option: Option) = with(binding) {
-            @ColorRes val colorRes =
-                if (option.url.isNullOrEmpty()) android.R.color.holo_blue_light else android.R.color.holo_green_light
-            txtId.apply {
-                text = option._id
-                setBackgroundColor(ResourcesCompat.getColor(resources, colorRes, null))
+            val url = when (option._id) {
+                0 -> R.drawable.slytherin
+                1 -> R.drawable.gryffindor
+                2 -> R.drawable.hufflepuff
+                3 -> R.drawable.ravenclaw
+                else -> option.url
             }
-            root.setOnClickListener { listener?.onItemClick(option.url) }
+            glide.load(url)
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .into(imgGame)
+
+            root.setOnClickListener { listener?.onItemClick(option) }
         }
     }
 
     interface Listener {
-        fun onItemClick(url: String?)
+        fun onItemClick(option: Option)
     }
 
     private class OptionDC : DiffUtil.ItemCallback<Option>() {

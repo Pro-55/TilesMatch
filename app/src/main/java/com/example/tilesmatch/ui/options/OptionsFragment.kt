@@ -6,20 +6,28 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
-import androidx.navigation.fragment.FragmentNavigatorExtras
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.example.tilesmatch.R
+import com.example.tilesmatch.data.viewmodel.MainViewModel
 import com.example.tilesmatch.databinding.FragmentOptionsBinding
 import com.example.tilesmatch.framework.BaseFragment
 import com.example.tilesmatch.models.Option
+import com.example.tilesmatch.models.Resource
+import com.example.tilesmatch.models.Status
+import com.example.tilesmatch.utils.extensions.glide
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class OptionsFragment : BaseFragment() {
 
     // Global
     private val TAG = OptionsFragment::class.java.simpleName
     private lateinit var binding: FragmentOptionsBinding
+    private val viewModel by viewModels<MainViewModel>()
     private var adapter: OptionsAdapter? = null
+    private val data = mutableListOf<Option>()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -34,18 +42,21 @@ class OptionsFragment : BaseFragment() {
 
         setupRecyclerview()
 
-        updateData()
-
         setListeners()
+
+        if (data.isNullOrEmpty()) viewModel.getOptions()
+
+        viewModel.options
+            .observe(viewLifecycleOwner, { resource -> handleOptionsResource(resource) })
 
         return binding.root
     }
 
     private fun setupRecyclerview() {
-        adapter = OptionsAdapter()
+        adapter = OptionsAdapter(glide())
         adapter?.setListener(object : OptionsAdapter.Listener {
-            override fun onItemClick(url: String?) {
-                val action = OptionsFragmentDirections.navigateOptionsToGame()
+            override fun onItemClick(option: Option) {
+                val action = OptionsFragmentDirections.navigateOptionsToGame(option)
                 findNavController().navigate(action)
             }
         })
@@ -61,11 +72,18 @@ class OptionsFragment : BaseFragment() {
         binding.efabSelect.setOnClickListener { }
     }
 
-    private fun updateData() {
-        val data = mutableListOf<Option>()
-        for (i in 0 until 999) {
-            data.add(Option(_id = "$i", url = "$i"))
+    private fun handleOptionsResource(resource: Resource<List<Option>>) {
+        when (resource.status) {
+            Status.LOADING -> Log.d(TAG, "TestLog: Loading")
+            Status.ERROR -> Log.d(TAG, "TestLog: e:${resource.message}")
+            Status.SUCCESS -> {
+                val list = resource.data
+                if (list.isNullOrEmpty()) {
+                    Log.d(TAG, "TestLog: Error")
+                    return
+                }
+                adapter?.swapData(list)
+            }
         }
-        adapter?.swapData(data)
     }
 }
