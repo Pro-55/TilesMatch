@@ -7,12 +7,9 @@ import kotlin.math.abs
 object TouchHelperUtils {
 
     fun getMoveDirection(
-        mE: MotionEvent,
-        x: Float,
-        y: Float
+        dx: Float,
+        dy: Float
     ): MoveDirection {
-        val dx = mE.rawX - x
-        val dy = mE.rawY - y
         val isXNegative = dx < 0
         val isYNegative = dy < 0
         val isHorizontal = abs(dx) > abs(dy)

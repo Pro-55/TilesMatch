@@ -4,19 +4,20 @@ import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.ViewGroup
-import androidx.annotation.ColorRes
-import androidx.core.content.res.ResourcesCompat
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.RequestManager
 import com.example.tilesmatch.R
 import com.example.tilesmatch.databinding.LayoutTilesItemBinding
 import com.example.tilesmatch.enums.MoveDirection
 import com.example.tilesmatch.models.Tile
 import com.example.tilesmatch.utils.TouchHelperUtils
 
-class TilesAdapter : ListAdapter<Tile, TilesAdapter.ViewHolder>(TileDC()) {
+class TilesAdapter(
+    private val glide: RequestManager
+) : ListAdapter<Tile, TilesAdapter.ViewHolder>(TileDC()) {
 
     // Global
     private val TAG = TilesAdapter::class.java.simpleName
@@ -46,9 +47,9 @@ class TilesAdapter : ListAdapter<Tile, TilesAdapter.ViewHolder>(TileDC()) {
         fun bind(tile: Tile) = with(binding) {
             val bitmap = tile.bitmap
             val isBlank = bitmap == null
-            @ColorRes val colorRes =
-                if (isBlank) android.R.color.holo_blue_light else android.R.color.holo_green_light
-            imgTile.setBackgroundColor(ResourcesCompat.getColor(root.resources, colorRes, null))
+            glide.load(bitmap)
+                .placeholder(android.R.color.transparent)
+                .into(imgTile)
             var x = 0F
             var y = 0F
             if (!isBlank) {
@@ -58,10 +59,14 @@ class TilesAdapter : ListAdapter<Tile, TilesAdapter.ViewHolder>(TileDC()) {
                             x = mE.rawX
                             y = mE.rawY
                         }
-                        MotionEvent.ACTION_CANCEL, MotionEvent.ACTION_UP -> listener?.onMove(
-                            absoluteAdapterPosition,
-                            TouchHelperUtils.getMoveDirection(mE, x, y)
-                        )
+                        MotionEvent.ACTION_CANCEL, MotionEvent.ACTION_UP -> {
+                            val dx = mE.rawX - x
+                            val dy = mE.rawY - y
+                            listener?.onMove(
+                                absoluteAdapterPosition,
+                                TouchHelperUtils.getMoveDirection(dx, dy)
+                            )
+                        }
                     }
                     true
                 }
@@ -84,6 +89,6 @@ class TilesAdapter : ListAdapter<Tile, TilesAdapter.ViewHolder>(TileDC()) {
         override fun areContentsTheSame(
             oldItem: Tile,
             newItem: Tile
-        ): Boolean = oldItem._id == newItem._id
+        ): Boolean = oldItem == newItem
     }
 }
