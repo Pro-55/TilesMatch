@@ -31,10 +31,16 @@ class OptionsAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) =
         holder.bind(getItem(position))
 
+    /**
+     * sets adapter listner
+     */
     fun setListener(listener: Listener?) {
         this.listener = listener
     }
 
+    /**
+     * swaps adapter data with current data
+     */
     fun swapData(data: List<Option>) = submitList(data.toMutableList())
 
     inner class ViewHolder(

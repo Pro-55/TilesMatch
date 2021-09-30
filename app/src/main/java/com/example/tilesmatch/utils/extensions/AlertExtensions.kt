@@ -2,7 +2,6 @@ package com.example.tilesmatch.utils.extensions
 
 import android.view.LayoutInflater
 import android.view.View
-import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
@@ -11,8 +10,14 @@ import com.example.tilesmatch.R
 import com.example.tilesmatch.databinding.LayoutConfirmationDialogBinding
 import com.google.android.material.snackbar.Snackbar
 
+/**
+ * show short snack bar for fragment
+ */
 fun Fragment.showShortSnackBar(message: String) = requireActivity().showShortSnackBar(message)
 
+/**
+ * show short snack bar for activity
+ */
 fun FragmentActivity.showShortSnackBar(message: String) {
     Snackbar.make(
         findViewById(android.R.id.content),
@@ -21,6 +26,17 @@ fun FragmentActivity.showShortSnackBar(message: String) {
     ).show()
 }
 
+/**
+ * build confirmation dialog with given param
+ *
+ * @param inflater instance of layout inflater
+ * @param message message to be displayed on the dialog
+ * @param positiveButton positive button text
+ * @param negativeButton negative button text
+ * @param positiveButtonClick positive button action
+ * @param negativeButtonClick negative button action
+ * @return instance of alter dialog
+ */
 fun AlertDialog.Builder.buildConfirmationDialog(
     inflater: LayoutInflater,
     message: String,

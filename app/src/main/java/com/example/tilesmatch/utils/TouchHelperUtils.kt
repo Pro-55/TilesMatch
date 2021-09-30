@@ -1,11 +1,17 @@
 package com.example.tilesmatch.utils
 
-import android.view.MotionEvent
 import com.example.tilesmatch.enums.MoveDirection
 import kotlin.math.abs
 
 object TouchHelperUtils {
 
+    /**
+     * calculates direction for move
+     *
+     * @param dx movement on X-Axis
+     * @param dy movement on Y-Axis
+     * @return direction of the move
+     */
     fun getMoveDirection(
         dx: Float,
         dy: Float

@@ -53,6 +53,9 @@ class OptionsFragment : BaseFragment() {
         return binding.root
     }
 
+    /**
+     * set ups recycler view with adapter
+     */
     private fun setupRecyclerview() {
         adapter = OptionsAdapter(glide())
         adapter?.setListener(object : OptionsAdapter.Listener {
@@ -64,6 +67,9 @@ class OptionsFragment : BaseFragment() {
         binding.recyclerOptions.adapter = adapter
     }
 
+    /**
+     * sets listeners to views
+     */
     private fun setListeners() {
         binding.recyclerOptions.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
@@ -73,6 +79,9 @@ class OptionsFragment : BaseFragment() {
         binding.efabSelect.setOnClickListener { showShortSnackBar("Not there yet!") }
     }
 
+    /**
+     * handle options response received from view model
+     */
     private fun handleOptionsResource(resource: Resource<List<Option>>) {
         when (resource.status) {
             Status.LOADING -> Log.d(TAG, "TestLog: Loading")
