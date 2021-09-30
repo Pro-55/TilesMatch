@@ -1,5 +1,6 @@
 package com.example.tilesmatch.ui.options
 
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -16,9 +17,12 @@ import com.example.tilesmatch.framework.BaseFragment
 import com.example.tilesmatch.models.Option
 import com.example.tilesmatch.models.Resource
 import com.example.tilesmatch.models.Status
+import com.example.tilesmatch.utils.Constants
+import com.example.tilesmatch.utils.TapTargets
 import com.example.tilesmatch.utils.extensions.glide
 import com.example.tilesmatch.utils.extensions.showShortSnackBar
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class OptionsFragment : BaseFragment() {
@@ -26,6 +30,7 @@ class OptionsFragment : BaseFragment() {
     // Global
     private val TAG = OptionsFragment::class.java.simpleName
     private lateinit var binding: FragmentOptionsBinding
+    @Inject lateinit var sp: SharedPreferences
     private val viewModel by viewModels<MainViewModel>()
     private var adapter: OptionsAdapter? = null
     private val data = mutableListOf<Option>()
@@ -51,6 +56,18 @@ class OptionsFragment : BaseFragment() {
             .observe(viewLifecycleOwner, { resource -> handleOptionsResource(resource) })
 
         return binding.root
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        if (sp.getBoolean(Constants.SHOULD_EXPLAIN_SELECT, true)) {
+            sp.edit().putBoolean(Constants.SHOULD_EXPLAIN_SELECT, false).apply()
+            TapTargets.show(
+                requireActivity(),
+                TapTargets.Input(binding.efabSelect, TapTargets.Type.ASSIST)
+            )
+        }
     }
 
     /**
