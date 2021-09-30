@@ -1,10 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="colorPrimary">#FAFAFA</color>
-    <color name="colorPrimaryLight">#FFFFFF</color>
     <color name="colorPrimaryDark">#C7C7C7</color>
     <color name="colorAccent">#006652</color>
-    <color name="colorAccentTint">#C0C0C0</color>
     <color name="textColor">@android:color/black</color>
     <color name="color_background">@android:color/white</color>
     <color name="color_card_background">@android:color/white</color>

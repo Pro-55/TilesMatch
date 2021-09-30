@@ -36,7 +36,7 @@ class GameFragment : BaseFragment() {
     private val data = mutableListOf<Tile>()
     private val currentData = mutableListOf<Tile>()
     private var count by Delegates.observable(0) { _, _, new ->
-        binding.txtMovesCounter.text = "Moves: $new"
+        binding.txtMovesCounter.text = resources.getString(R.string.label_count, new)
     }
     private var adapter: TilesAdapter? = null
 
@@ -55,7 +55,7 @@ class GameFragment : BaseFragment() {
 
         binding.txtGameTitle.text = option.title
 
-        binding.txtMovesCounter.text = "Moves: $count"
+        binding.txtMovesCounter.text = resources.getString(R.string.label_count, count)
 
         setRecyclerview()
 
@@ -69,6 +69,9 @@ class GameFragment : BaseFragment() {
         return binding.root
     }
 
+    /**
+     * set ups recycler view with adapter
+     */
     private fun setRecyclerview() {
         adapter = TilesAdapter(glide)
         adapter?.setListener(object : TilesAdapter.Listener {
@@ -87,6 +90,9 @@ class GameFragment : BaseFragment() {
         binding.recyclerTiles.adapter = adapter
     }
 
+    /**
+     * sets listeners to views
+     */
     private fun setListeners() {
         binding.imgBtnBack.setOnClickListener { this.onBackPressed() }
         binding.switchEnableIds.setOnCheckedChangeListener { _, isChecked ->
@@ -96,6 +102,10 @@ class GameFragment : BaseFragment() {
         binding.imgBtnReset.setOnClickListener { resetGameTiles() }
     }
 
+    /**
+     * validate current state of board to determine if game has ended or not
+     * if state is valid show confirmation dialog
+     */
     private fun validateState() {
         if (isValid()) {
             val dialog = AlertDialog.Builder(requireContext())
@@ -109,11 +119,17 @@ class GameFragment : BaseFragment() {
         }
     }
 
+    /**
+     * @return flag denoting if current board config is valid or not
+     */
     private fun isValid(): Boolean {
         currentData.forEachIndexed { i, v -> if (i != v._id) return false }
         return true
     }
 
+    /**
+     * handle tiles response received from view model
+     */
     private fun handleTilesResource(resource: Resource<List<Tile>>) {
         when (resource.status) {
             Status.LOADING -> Log.d(TAG, "TestLog: Loading")
@@ -131,12 +147,19 @@ class GameFragment : BaseFragment() {
         }
     }
 
+    /**
+     * resets game tiles to original configuration
+     * and resets the move count
+     */
     private fun resetGameTiles() {
         count = 0
         updateCurrentData(data)
         showShortSnackBar("Resetting...")
     }
 
+    /**
+     * updates current list data
+     */
     private fun updateCurrentData(list: List<Tile>) {
         val mappedList = list.map { it.copy(shouldShowId = binding.switchEnableIds.isChecked) }
         currentData.clear()

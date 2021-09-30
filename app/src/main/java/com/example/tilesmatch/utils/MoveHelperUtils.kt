@@ -4,7 +4,19 @@ import com.example.tilesmatch.enums.MoveDirection
 
 object MoveHelperUtils {
 
-    fun getValidTargetPosition(position: Int, direction: MoveDirection): Int {
+    /**
+     * calculates column and row for given position
+     * and returns target position for the move
+     * if the move is not valid for given position then returns -1
+     *
+     * @param position current position
+     * @param direction direction of the move
+     * @return target position
+     */
+    fun getValidTargetPosition(
+        position: Int,
+        direction: MoveDirection
+    ): Int {
         val row = position / 4
         val column = position - (row * 4)
         return when (direction) {

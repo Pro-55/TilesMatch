@@ -17,6 +17,7 @@
                 android:id="@+id/img_game"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
+                android:contentDescription="@string/cd_option_item"
                 android:gravity="center"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintDimensionRatio="H,1:1"

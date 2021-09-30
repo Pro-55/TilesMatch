@@ -25,6 +25,11 @@ class RepositoryImpl @Inject constructor(
     private val TAG = RepositoryImpl::class.java.simpleName
     private val gson = GsonBuilder().create()
 
+    /**
+     * parse the data in json file and return options list
+     *
+     * @return resource flow of options list
+     */
     override fun getOptions(): Flow<Resource<List<Option>>> = resourceFlow {
         val json = am.readFile("data.json")
         val data =
@@ -33,6 +38,14 @@ class RepositoryImpl @Inject constructor(
         else emit(Resource.success(data))
     }
 
+    /**
+     * get bitmap from given url
+     * divide resultant bitmap into 16 parts
+     * replace last part with null and shuffle the list
+     * return the valid shuffled list
+     *
+     * @return resource flow of game tiles
+     */
     override fun getGameTiles(
         glide: RequestManager,
         option: Option
@@ -65,6 +78,10 @@ class RepositoryImpl @Inject constructor(
         emit(Resource.success(getShuffledList(list)))
     }
 
+    /**
+     * @param list sorted list of tiles
+     * @return list of valid shuffled tiles
+     */
     private fun getShuffledList(list: List<Tile>): List<Tile> {
         val shuffledList = mutableListOf<Tile>()
         do {
@@ -75,6 +92,11 @@ class RepositoryImpl @Inject constructor(
         return shuffledList
     }
 
+    /**
+     * shuffles the tiles in given list randomly
+     *
+     * @param tiles sorted list of tiles
+     */
     private fun shuffle(tiles: MutableList<Tile>) {
         var n = tiles.size - 1
         while (n > 1) {
@@ -85,12 +107,16 @@ class RepositoryImpl @Inject constructor(
         }
     }
 
+    /**
+     * @param tiles list of shuffled tiles
+     * @return flag denoting if current tiles config is solvable or not
+     */
     private fun isSolvable(tiles: List<Tile>): Boolean {
         var countInversions = 0
         val n = tiles.size - 1
-        for(i in 0 until n){
-            for(j in 0 until i){
-                if(tiles[j]._id > tiles[i]._id) ++countInversions
+        for (i in 0 until n) {
+            for (j in 0 until i) {
+                if (tiles[j]._id > tiles[i]._id) ++countInversions
             }
         }
         return countInversions % 2 == 0

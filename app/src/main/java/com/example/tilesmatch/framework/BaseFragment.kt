@@ -21,5 +21,4 @@ open class BaseFragment : Fragment() {
     open fun onBackPressed() {
         if (!findNavController().popBackStack()) requireActivity().finish()
     }
-
 }

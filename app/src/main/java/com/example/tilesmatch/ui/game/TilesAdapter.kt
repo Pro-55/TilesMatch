@@ -36,10 +36,16 @@ class TilesAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) =
         holder.bind(getItem(position))
 
+    /**
+     * sets adapter listener
+     */
     fun setListener(listener: Listener?) {
         this.listener = listener
     }
 
+    /**
+     * swaps adapter data with current data
+     */
     fun swapData(data: List<Tile>) = submitList(data.toMutableList())
 
     inner class ViewHolder(
@@ -78,9 +84,7 @@ class TilesAdapter(
                     }
                     true
                 }
-            } else {
-                root.setOnTouchListener(null)
-            }
+            } else root.setOnTouchListener(null)
         }
     }
 
