@@ -13,7 +13,7 @@ import com.example.tilesmatch.R
 import com.example.tilesmatch.databinding.LayoutTilesItemBinding
 import com.example.tilesmatch.enums.MoveDirection
 import com.example.tilesmatch.models.Tile
-import com.example.tilesmatch.utils.TouchHelperUtils
+import com.example.tilesmatch.utils.helpers.TouchHelperUtils
 import com.example.tilesmatch.utils.extensions.gone
 import com.example.tilesmatch.utils.extensions.visible
 

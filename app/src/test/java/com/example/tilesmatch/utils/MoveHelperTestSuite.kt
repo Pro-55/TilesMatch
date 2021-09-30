@@ -1,6 +1,7 @@
 package com.example.tilesmatch.utils
 
 import com.example.tilesmatch.enums.MoveDirection
+import com.example.tilesmatch.utils.helpers.MoveHelperUtils
 import org.junit.Test
 
 class MoveHelperTestSuite {

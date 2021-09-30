@@ -1,5 +1,6 @@
 package com.example.tilesmatch.ui.game
 
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -17,11 +18,14 @@ import com.example.tilesmatch.framework.BaseFragment
 import com.example.tilesmatch.models.Resource
 import com.example.tilesmatch.models.Status
 import com.example.tilesmatch.models.Tile
-import com.example.tilesmatch.utils.MoveHelperUtils
+import com.example.tilesmatch.utils.Constants
+import com.example.tilesmatch.utils.TapTargets
 import com.example.tilesmatch.utils.extensions.buildConfirmationDialog
 import com.example.tilesmatch.utils.extensions.glide
 import com.example.tilesmatch.utils.extensions.showShortSnackBar
+import com.example.tilesmatch.utils.helpers.MoveHelperUtils
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 import kotlin.properties.Delegates
 
 @AndroidEntryPoint
@@ -30,6 +34,7 @@ class GameFragment : BaseFragment() {
     // Global
     private val TAG = GameFragment::class.java.simpleName
     private lateinit var binding: FragmentGameBinding
+    @Inject lateinit var sp: SharedPreferences
     private val args by navArgs<GameFragmentArgs>()
     private val viewModel by viewModels<MainViewModel>()
     private val glide by lazy { glide() }
@@ -67,6 +72,26 @@ class GameFragment : BaseFragment() {
             .observe(viewLifecycleOwner, { resource -> handleTilesResource(resource) })
 
         return binding.root
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        val shouldExplainAssist = sp.getBoolean(Constants.SHOULD_EXPLAIN_ASSIST, true)
+        val shouldExplainReset = sp.getBoolean(Constants.SHOULD_EXPLAIN_RESET, true)
+
+        if (shouldExplainAssist || shouldExplainReset) {
+            val list = mutableListOf<TapTargets.Input>()
+            if (shouldExplainAssist) {
+                sp.edit().putBoolean(Constants.SHOULD_EXPLAIN_ASSIST, false).apply()
+                list.add(TapTargets.Input(binding.switchEnableIds, TapTargets.Type.ASSIST))
+            }
+            if (shouldExplainReset) {
+                sp.edit().putBoolean(Constants.SHOULD_EXPLAIN_RESET, false).apply()
+                list.add(TapTargets.Input(binding.imgBtnReset, TapTargets.Type.RESET))
+            }
+            TapTargets.show(requireActivity(), list)
+        }
     }
 
     /**

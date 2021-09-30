@@ -96,6 +96,9 @@ dependencies {
     // Gson
     implementation("com.google.code.gson:gson:2.8.8")
 
+    // TapTargetView
+    implementation("com.getkeepsafe.taptargetview:taptargetview:1.13.3")
+
     // Test
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.3")

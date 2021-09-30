@@ -1,4 +1,4 @@
-package com.example.tilesmatch.utils
+package com.example.tilesmatch.utils.helpers
 
 import com.example.tilesmatch.enums.MoveDirection
 
