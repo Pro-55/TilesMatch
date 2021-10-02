@@ -23,7 +23,7 @@ class RepositoryImpl @Inject constructor(
 
     // Global
     private val TAG = RepositoryImpl::class.java.simpleName
-    private val gson = GsonBuilder().create()
+    private val gson by lazy { GsonBuilder().create() }
 
     /**
      * parse the data in json file and return options list
@@ -48,19 +48,30 @@ class RepositoryImpl @Inject constructor(
      */
     override fun getGameTiles(
         glide: RequestManager,
-        option: Option
+        option: Option?
     ): Flow<Resource<List<Tile>>> = resourceFlow {
-        val url = when (option._id) {
+        val url = when (option?._id) {
             0 -> R.drawable.slytherin
             1 -> R.drawable.gryffindor
             2 -> R.drawable.hufflepuff
             3 -> R.drawable.ravenclaw
-            else -> option.url
+            else -> option?.url
         }
+
+        if (url == null) {
+            emit(Resource.error("Game Not Found!"))
+            return@resourceFlow
+        }
+
         val bitmap = glide.asBitmap()
             .load(url)
             .submit()
-            .get()!!
+            .get()
+
+        if (bitmap == null) {
+            emit(Resource.error("Game Not Found!"))
+            return@resourceFlow
+        }
 
         val row = bitmap.width / 4
         val column = bitmap.height / 4

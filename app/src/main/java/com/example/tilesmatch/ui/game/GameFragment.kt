@@ -15,6 +15,7 @@ import com.example.tilesmatch.data.viewmodel.MainViewModel
 import com.example.tilesmatch.databinding.FragmentGameBinding
 import com.example.tilesmatch.enums.MoveDirection
 import com.example.tilesmatch.framework.BaseFragment
+import com.example.tilesmatch.models.Option
 import com.example.tilesmatch.models.Resource
 import com.example.tilesmatch.models.Status
 import com.example.tilesmatch.models.Tile
@@ -38,6 +39,7 @@ class GameFragment : BaseFragment() {
     private val args by navArgs<GameFragmentArgs>()
     private val viewModel by viewModels<MainViewModel>()
     private val glide by lazy { glide() }
+    private var option: Option? = null
     private val data = mutableListOf<Tile>()
     private val currentData = mutableListOf<Tile>()
     private var count by Delegates.observable(0) { _, _, new ->
@@ -56,9 +58,9 @@ class GameFragment : BaseFragment() {
             container, false
         )
 
-        val option = args.option
+        option = args.option
 
-        binding.txtGameTitle.text = option.title
+        binding.txtGameTitle.text = option?.title
 
         binding.txtMovesCounter.text = resources.getString(R.string.label_count, count)
 
@@ -136,7 +138,7 @@ class GameFragment : BaseFragment() {
             val dialog = AlertDialog.Builder(requireContext())
                 .buildConfirmationDialog(
                     inflater = layoutInflater,
-                    message = "Congratulations!\nYou Won!\nWanna go again?",
+                    message = "Congratulations!\nYou Solved ${option?.title ?: "The Puzzle"} in $count Moves!\nWanna go again?",
                     positiveButtonClick = { resetGameTiles() },
                     negativeButtonClick = { this.onBackPressed() }
                 )
