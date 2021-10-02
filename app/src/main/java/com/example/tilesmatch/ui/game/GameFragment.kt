@@ -2,7 +2,6 @@ package com.example.tilesmatch.ui.game
 
 import android.content.SharedPreferences
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -158,19 +157,16 @@ class GameFragment : BaseFragment() {
      * handle tiles response received from view model
      */
     private fun handleTilesResource(resource: Resource<List<Tile>>) {
-        when (resource.status) {
-            Status.LOADING -> Log.d(TAG, "TestLog: Loading")
-            Status.ERROR -> this.onBackPressed()
-            Status.SUCCESS -> {
-                val list = resource.data
-                if (list.isNullOrEmpty()) {
-                    this.onBackPressed()
-                    return
-                }
-                data.clear()
-                data.addAll(list)
-                updateCurrentData(list)
+        if (resource.status != Status.LOADING) {
+            val list = resource.data
+            if (list.isNullOrEmpty()) {
+                showShortSnackBar(resource.message ?: Constants.MSG_SOMETHING_WENT_WRONG)
+                this.onBackPressed()
+                return
             }
+            data.clear()
+            data.addAll(list)
+            updateCurrentData(list)
         }
     }
 

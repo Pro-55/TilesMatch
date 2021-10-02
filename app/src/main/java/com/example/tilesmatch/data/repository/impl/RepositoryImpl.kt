@@ -8,6 +8,7 @@ import com.example.tilesmatch.data.repository.contract.Repository
 import com.example.tilesmatch.models.Option
 import com.example.tilesmatch.models.Resource
 import com.example.tilesmatch.models.Tile
+import com.example.tilesmatch.utils.Constants
 import com.example.tilesmatch.utils.extensions.readFile
 import com.example.tilesmatch.utils.extensions.resourceFlow
 import com.google.gson.GsonBuilder
@@ -34,7 +35,7 @@ class RepositoryImpl @Inject constructor(
         val json = am.readFile("data.json")
         val data =
             gson.fromJson<List<Option>>(json, object : TypeToken<List<Option>>() {}.type)
-        if (data.isNullOrEmpty()) emit(Resource.error("No data found!"))
+        if (data.isNullOrEmpty()) emit(Resource.error(Constants.MSG_NO_DATA_FOUND))
         else emit(Resource.success(data))
     }
 
@@ -59,7 +60,7 @@ class RepositoryImpl @Inject constructor(
         }
 
         if (url == null) {
-            emit(Resource.error("Game Not Found!"))
+            emit(Resource.error(Constants.MSG_GAME_NOT_FOUND))
             return@resourceFlow
         }
 
@@ -69,7 +70,7 @@ class RepositoryImpl @Inject constructor(
             .get()
 
         if (bitmap == null) {
-            emit(Resource.error("Game Not Found!"))
+            emit(Resource.error(Constants.MSG_GAME_NOT_FOUND))
             return@resourceFlow
         }
 
