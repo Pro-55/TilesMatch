@@ -5,7 +5,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.ColorRes
 import androidx.appcompat.app.AlertDialog
+import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
@@ -14,10 +16,7 @@ import com.example.tilesmatch.data.viewmodel.MainViewModel
 import com.example.tilesmatch.databinding.FragmentGameBinding
 import com.example.tilesmatch.enums.MoveDirection
 import com.example.tilesmatch.framework.BaseFragment
-import com.example.tilesmatch.models.Option
-import com.example.tilesmatch.models.Resource
-import com.example.tilesmatch.models.Status
-import com.example.tilesmatch.models.Tile
+import com.example.tilesmatch.models.*
 import com.example.tilesmatch.utils.Constants
 import com.example.tilesmatch.utils.TapTargets
 import com.example.tilesmatch.utils.extensions.buildConfirmationDialog
@@ -41,6 +40,7 @@ class GameFragment : BaseFragment() {
     private var option: Option? = null
     private val data = mutableListOf<Tile>()
     private val currentData = mutableListOf<Tile>()
+    private val moves = mutableListOf<Move>()
     private var count by Delegates.observable(0) { _, _, new ->
         binding.txtMovesCounter.text = resources.getString(R.string.label_count, new)
     }
@@ -104,11 +104,10 @@ class GameFragment : BaseFragment() {
             override fun onMove(position: Int, direction: MoveDirection) {
                 val targetPosition = MoveHelperUtils.getValidTargetPosition(position, direction)
                 if (targetPosition > -1 && currentData[targetPosition].bitmap == null) {
+                    moves.add(Move(position = position, targetPosition = targetPosition))
+                    handleUndoButtonState()
                     ++count
-                    val temp = currentData[position].copy()
-                    currentData[position] = currentData[targetPosition].copy()
-                    currentData[targetPosition] = temp
-                    adapter?.swapData(currentData)
+                    swap(position, targetPosition)
                     validateState()
                 }
             }
@@ -126,6 +125,7 @@ class GameFragment : BaseFragment() {
             updateCurrentData(list)
         }
         binding.imgBtnReset.setOnClickListener { resetGameTiles() }
+        binding.imgBtnUndo.setOnClickListener { undoMove() }
     }
 
     /**
@@ -164,6 +164,8 @@ class GameFragment : BaseFragment() {
                 this.onBackPressed()
                 return
             }
+            moves.clear()
+            handleUndoButtonState()
             data.clear()
             data.addAll(list)
             updateCurrentData(list)
@@ -175,9 +177,36 @@ class GameFragment : BaseFragment() {
      * and resets the move count
      */
     private fun resetGameTiles() {
+        moves.clear()
+        handleUndoButtonState()
         count = 0
         updateCurrentData(data)
         showShortSnackBar("Resetting...")
+    }
+
+    /**
+     * undo last move
+     */
+    private fun undoMove() {
+        if (!moves.isNullOrEmpty()) {
+            val lastMove = moves.removeAt(moves.size - 1)
+            handleUndoButtonState()
+            --count
+            swap(lastMove.targetPosition, lastMove.position)
+        }
+    }
+
+    /**
+     * swap items on passed positions
+     *
+     * @param position current position of the item
+     * @param targetPosition target position of the item
+     */
+    fun swap(position: Int, targetPosition: Int) {
+        val temp = currentData[position].copy()
+        currentData[position] = currentData[targetPosition].copy()
+        currentData[targetPosition] = temp
+        adapter?.swapData(currentData)
     }
 
     /**
@@ -188,6 +217,18 @@ class GameFragment : BaseFragment() {
         currentData.clear()
         currentData.addAll(mappedList)
         adapter?.swapData(currentData)
+    }
+
+    /**
+     * handle color state of undo button
+     */
+    private fun handleUndoButtonState() {
+        @ColorRes val colorResId =
+            if (moves.isNullOrEmpty()) android.R.color.darker_gray else R.color.textColor
+        binding.imgBtnUndo.setColorFilter(
+            ContextCompat.getColor(requireContext(), colorResId),
+            android.graphics.PorterDuff.Mode.SRC_IN
+        )
     }
 
     override fun onBackPressed() {

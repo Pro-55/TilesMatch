@@ -19,13 +19,9 @@ fun View.gone() {
 /**
  * @return flag denoting if the view is visible or not
  */
-fun View.isVisible(): Boolean {
-    return visibility == View.VISIBLE
-}
+fun View.isVisible(): Boolean = visibility == View.VISIBLE
 
 /**
  * @return flag denoting if the view is gone or not
  */
-fun View.isGone(): Boolean {
-    return visibility == View.GONE
-}
+fun View.isGone(): Boolean = visibility == View.GONE
