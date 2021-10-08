@@ -51,7 +51,7 @@ class OptionsFragment : BaseFragment() {
 
         setListeners()
 
-        if (data.isNullOrEmpty()) viewModel.getOptions()
+        if (viewModel.options.value?.data.isNullOrEmpty()) viewModel.getOptions()
 
         viewModel.options
             .observe(viewLifecycleOwner, { resource -> handleOptionsResource(resource) })

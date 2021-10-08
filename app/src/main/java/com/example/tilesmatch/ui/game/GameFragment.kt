@@ -44,6 +44,7 @@ class GameFragment : BaseFragment() {
     private var count by Delegates.observable(0) { _, _, new ->
         binding.txtMovesCounter.text = resources.getString(R.string.label_count, new)
     }
+    private var canGoBack = true
     private var adapter: TilesAdapter? = null
 
     override fun onCreateView(
@@ -223,16 +224,36 @@ class GameFragment : BaseFragment() {
      * handle color state of undo button
      */
     private fun handleUndoButtonState() {
+        val isMovesEmpty = moves.isNullOrEmpty()
+        if (canGoBack != isMovesEmpty) canGoBack = isMovesEmpty
         @ColorRes val colorResId =
-            if (moves.isNullOrEmpty()) android.R.color.darker_gray else R.color.textColor
+            if (isMovesEmpty) android.R.color.darker_gray else R.color.textColor
         binding.imgBtnUndo.setColorFilter(
             ContextCompat.getColor(requireContext(), colorResId),
             android.graphics.PorterDuff.Mode.SRC_IN
         )
     }
 
+    /**
+     * show confirmation dialog before going back to the previous screen
+     */
+    private fun confirmBack() {
+        val dialog = AlertDialog.Builder(requireContext())
+            .buildConfirmationDialog(
+                inflater = layoutInflater,
+                message = "All Your Progress Will Be Lost!\nSure You Want To Go Back?",
+                positiveButtonClick = {
+                    canGoBack = true
+                    this.onBackPressed()
+                }
+            )
+        dialog.show()
+    }
+
     override fun onBackPressed() {
-        viewModel.clearGameTiles()
-        super.onBackPressed()
+        if (canGoBack) {
+            viewModel.clearGameTiles()
+            super.onBackPressed()
+        } else confirmBack()
     }
 }
