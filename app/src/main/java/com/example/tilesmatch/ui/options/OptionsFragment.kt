@@ -2,10 +2,10 @@ package com.example.tilesmatch.ui.options
 
 import android.content.SharedPreferences
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AlertDialog
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -19,6 +19,7 @@ import com.example.tilesmatch.models.Resource
 import com.example.tilesmatch.models.Status
 import com.example.tilesmatch.utils.Constants
 import com.example.tilesmatch.utils.TapTargets
+import com.example.tilesmatch.utils.extensions.buildConfirmationDialog
 import com.example.tilesmatch.utils.extensions.glide
 import com.example.tilesmatch.utils.extensions.showShortSnackBar
 import dagger.hilt.android.AndroidEntryPoint
@@ -50,7 +51,7 @@ class OptionsFragment : BaseFragment() {
 
         setListeners()
 
-        if (data.isNullOrEmpty()) viewModel.getOptions()
+        if (viewModel.options.value?.data.isNullOrEmpty()) viewModel.getOptions()
 
         viewModel.options
             .observe(viewLifecycleOwner, { resource -> handleOptionsResource(resource) })
@@ -100,17 +101,21 @@ class OptionsFragment : BaseFragment() {
      * handle options response received from view model
      */
     private fun handleOptionsResource(resource: Resource<List<Option>>) {
-        when (resource.status) {
-            Status.LOADING -> Log.d(TAG, "TestLog: Loading")
-            Status.ERROR -> Log.d(TAG, "TestLog: e:${resource.message}")
-            Status.SUCCESS -> {
-                val list = resource.data
-                if (list.isNullOrEmpty()) {
-                    Log.d(TAG, "TestLog: Error")
-                    return
-                }
-                adapter?.swapData(list)
+        if (resource.status != Status.LOADING) {
+            val list = resource.data
+            if (list.isNullOrEmpty()) {
+                showShortSnackBar(resource.message ?: Constants.MSG_SOMETHING_WENT_WRONG)
+                val dialog = AlertDialog.Builder(requireContext())
+                    .buildConfirmationDialog(
+                        inflater = layoutInflater,
+                        message = "Something went wrong while fetching the data!\nDo you want to retry?",
+                        positiveButtonClick = { viewModel.getOptions() },
+                        negativeButtonClick = { this.onBackPressed() }
+                    )
+                dialog.show()
+                return
             }
+            adapter?.swapData(list)
         }
     }
 }

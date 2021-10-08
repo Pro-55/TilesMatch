@@ -8,6 +8,7 @@ import com.example.tilesmatch.data.repository.contract.Repository
 import com.example.tilesmatch.models.Option
 import com.example.tilesmatch.models.Resource
 import com.example.tilesmatch.models.Tile
+import com.example.tilesmatch.utils.Constants
 import com.example.tilesmatch.utils.extensions.readFile
 import com.example.tilesmatch.utils.extensions.resourceFlow
 import com.google.gson.GsonBuilder
@@ -23,7 +24,7 @@ class RepositoryImpl @Inject constructor(
 
     // Global
     private val TAG = RepositoryImpl::class.java.simpleName
-    private val gson = GsonBuilder().create()
+    private val gson by lazy { GsonBuilder().create() }
 
     /**
      * parse the data in json file and return options list
@@ -34,7 +35,7 @@ class RepositoryImpl @Inject constructor(
         val json = am.readFile("data.json")
         val data =
             gson.fromJson<List<Option>>(json, object : TypeToken<List<Option>>() {}.type)
-        if (data.isNullOrEmpty()) emit(Resource.error("No data found!"))
+        if (data.isNullOrEmpty()) emit(Resource.error(Constants.MSG_NO_DATA_FOUND))
         else emit(Resource.success(data))
     }
 
@@ -48,19 +49,30 @@ class RepositoryImpl @Inject constructor(
      */
     override fun getGameTiles(
         glide: RequestManager,
-        option: Option
+        option: Option?
     ): Flow<Resource<List<Tile>>> = resourceFlow {
-        val url = when (option._id) {
+        val url = when (option?._id) {
             0 -> R.drawable.slytherin
             1 -> R.drawable.gryffindor
             2 -> R.drawable.hufflepuff
             3 -> R.drawable.ravenclaw
-            else -> option.url
+            else -> option?.url
         }
+
+        if (url == null) {
+            emit(Resource.error(Constants.MSG_GAME_NOT_FOUND))
+            return@resourceFlow
+        }
+
         val bitmap = glide.asBitmap()
             .load(url)
             .submit()
-            .get()!!
+            .get()
+
+        if (bitmap == null) {
+            emit(Resource.error(Constants.MSG_GAME_NOT_FOUND))
+            return@resourceFlow
+        }
 
         val row = bitmap.width / 4
         val column = bitmap.height / 4

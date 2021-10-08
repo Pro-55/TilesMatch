@@ -7,4 +7,7 @@ object Constants {
     const val SHOULD_EXPLAIN_ASSIST = "should_explain_ASSIST"
     const val SHOULD_EXPLAIN_RESET = "should_explain_reset"
 
+    const val MSG_SOMETHING_WENT_WRONG = "Something Went Wrong!"
+    const val MSG_NO_DATA_FOUND = "No Data Found!"
+    const val MSG_GAME_NOT_FOUND = "Game Not Found!"
 }

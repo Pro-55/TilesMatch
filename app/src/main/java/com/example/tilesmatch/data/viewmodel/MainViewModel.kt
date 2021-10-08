@@ -41,7 +41,7 @@ class MainViewModel @Inject constructor(
      */
     fun getGameTiles(
         glide: RequestManager,
-        option: Option
+        option: Option?
     ) {
         repository.getGameTiles(glide, option)
             .onEach { resource ->

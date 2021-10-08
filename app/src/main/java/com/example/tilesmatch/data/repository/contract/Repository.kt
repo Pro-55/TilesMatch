@@ -8,5 +8,5 @@ import kotlinx.coroutines.flow.Flow
 
 interface Repository {
     fun getOptions(): Flow<Resource<List<Option>>>
-    fun getGameTiles(glide: RequestManager, option: Option): Flow<Resource<List<Tile>>>
+    fun getGameTiles(glide: RequestManager, option: Option?): Flow<Resource<List<Tile>>>
 }

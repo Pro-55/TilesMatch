@@ -2,11 +2,12 @@ package com.example.tilesmatch.ui.game
 
 import android.content.SharedPreferences
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.ColorRes
 import androidx.appcompat.app.AlertDialog
+import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
@@ -15,9 +16,7 @@ import com.example.tilesmatch.data.viewmodel.MainViewModel
 import com.example.tilesmatch.databinding.FragmentGameBinding
 import com.example.tilesmatch.enums.MoveDirection
 import com.example.tilesmatch.framework.BaseFragment
-import com.example.tilesmatch.models.Resource
-import com.example.tilesmatch.models.Status
-import com.example.tilesmatch.models.Tile
+import com.example.tilesmatch.models.*
 import com.example.tilesmatch.utils.Constants
 import com.example.tilesmatch.utils.TapTargets
 import com.example.tilesmatch.utils.extensions.buildConfirmationDialog
@@ -38,11 +37,14 @@ class GameFragment : BaseFragment() {
     private val args by navArgs<GameFragmentArgs>()
     private val viewModel by viewModels<MainViewModel>()
     private val glide by lazy { glide() }
+    private var option: Option? = null
     private val data = mutableListOf<Tile>()
     private val currentData = mutableListOf<Tile>()
+    private val moves = mutableListOf<Move>()
     private var count by Delegates.observable(0) { _, _, new ->
         binding.txtMovesCounter.text = resources.getString(R.string.label_count, new)
     }
+    private var canGoBack = true
     private var adapter: TilesAdapter? = null
 
     override fun onCreateView(
@@ -56,9 +58,9 @@ class GameFragment : BaseFragment() {
             container, false
         )
 
-        val option = args.option
+        option = args.option
 
-        binding.txtGameTitle.text = option.title
+        binding.txtGameTitle.text = option?.title
 
         binding.txtMovesCounter.text = resources.getString(R.string.label_count, count)
 
@@ -103,11 +105,10 @@ class GameFragment : BaseFragment() {
             override fun onMove(position: Int, direction: MoveDirection) {
                 val targetPosition = MoveHelperUtils.getValidTargetPosition(position, direction)
                 if (targetPosition > -1 && currentData[targetPosition].bitmap == null) {
+                    moves.add(Move(position = position, targetPosition = targetPosition))
+                    handleUndoButtonState()
                     ++count
-                    val temp = currentData[position].copy()
-                    currentData[position] = currentData[targetPosition].copy()
-                    currentData[targetPosition] = temp
-                    adapter?.swapData(currentData)
+                    swap(position, targetPosition)
                     validateState()
                 }
             }
@@ -125,6 +126,7 @@ class GameFragment : BaseFragment() {
             updateCurrentData(list)
         }
         binding.imgBtnReset.setOnClickListener { resetGameTiles() }
+        binding.imgBtnUndo.setOnClickListener { undoMove() }
     }
 
     /**
@@ -136,7 +138,7 @@ class GameFragment : BaseFragment() {
             val dialog = AlertDialog.Builder(requireContext())
                 .buildConfirmationDialog(
                     inflater = layoutInflater,
-                    message = "Congratulations!\nYou Won!\nWanna go again?",
+                    message = "Congratulations!\nYou Solved ${option?.title ?: "The Puzzle"} in $count Moves!\nWanna go again?",
                     positiveButtonClick = { resetGameTiles() },
                     negativeButtonClick = { this.onBackPressed() }
                 )
@@ -156,19 +158,18 @@ class GameFragment : BaseFragment() {
      * handle tiles response received from view model
      */
     private fun handleTilesResource(resource: Resource<List<Tile>>) {
-        when (resource.status) {
-            Status.LOADING -> Log.d(TAG, "TestLog: Loading")
-            Status.ERROR -> this.onBackPressed()
-            Status.SUCCESS -> {
-                val list = resource.data
-                if (list.isNullOrEmpty()) {
-                    this.onBackPressed()
-                    return
-                }
-                data.clear()
-                data.addAll(list)
-                updateCurrentData(list)
+        if (resource.status != Status.LOADING) {
+            val list = resource.data
+            if (list.isNullOrEmpty()) {
+                showShortSnackBar(resource.message ?: Constants.MSG_SOMETHING_WENT_WRONG)
+                this.onBackPressed()
+                return
             }
+            moves.clear()
+            handleUndoButtonState()
+            data.clear()
+            data.addAll(list)
+            updateCurrentData(list)
         }
     }
 
@@ -177,9 +178,36 @@ class GameFragment : BaseFragment() {
      * and resets the move count
      */
     private fun resetGameTiles() {
+        moves.clear()
+        handleUndoButtonState()
         count = 0
         updateCurrentData(data)
         showShortSnackBar("Resetting...")
+    }
+
+    /**
+     * undo last move
+     */
+    private fun undoMove() {
+        if (!moves.isNullOrEmpty()) {
+            val lastMove = moves.removeAt(moves.size - 1)
+            handleUndoButtonState()
+            --count
+            swap(lastMove.targetPosition, lastMove.position)
+        }
+    }
+
+    /**
+     * swap items on passed positions
+     *
+     * @param position current position of the item
+     * @param targetPosition target position of the item
+     */
+    fun swap(position: Int, targetPosition: Int) {
+        val temp = currentData[position].copy()
+        currentData[position] = currentData[targetPosition].copy()
+        currentData[targetPosition] = temp
+        adapter?.swapData(currentData)
     }
 
     /**
@@ -192,8 +220,40 @@ class GameFragment : BaseFragment() {
         adapter?.swapData(currentData)
     }
 
+    /**
+     * handle color state of undo button
+     */
+    private fun handleUndoButtonState() {
+        val isMovesEmpty = moves.isNullOrEmpty()
+        if (canGoBack != isMovesEmpty) canGoBack = isMovesEmpty
+        @ColorRes val colorResId =
+            if (isMovesEmpty) android.R.color.darker_gray else R.color.textColor
+        binding.imgBtnUndo.setColorFilter(
+            ContextCompat.getColor(requireContext(), colorResId),
+            android.graphics.PorterDuff.Mode.SRC_IN
+        )
+    }
+
+    /**
+     * show confirmation dialog before going back to the previous screen
+     */
+    private fun confirmBack() {
+        val dialog = AlertDialog.Builder(requireContext())
+            .buildConfirmationDialog(
+                inflater = layoutInflater,
+                message = "All Your Progress Will Be Lost!\nSure You Want To Go Back?",
+                positiveButtonClick = {
+                    canGoBack = true
+                    this.onBackPressed()
+                }
+            )
+        dialog.show()
+    }
+
     override fun onBackPressed() {
-        viewModel.clearGameTiles()
-        super.onBackPressed()
+        if (canGoBack) {
+            viewModel.clearGameTiles()
+            super.onBackPressed()
+        } else confirmBack()
     }
 }

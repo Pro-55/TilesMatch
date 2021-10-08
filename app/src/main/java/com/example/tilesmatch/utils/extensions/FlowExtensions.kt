@@ -2,6 +2,7 @@ package com.example.tilesmatch.utils.extensions
 
 import android.util.Log
 import com.example.tilesmatch.models.Resource
+import com.example.tilesmatch.utils.Constants
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
 
@@ -28,6 +29,6 @@ fun <T> Flow<Resource<T>>.asResourceFlow(): Flow<Resource<T>> =
                 is IllegalArgumentException -> Log.d("RF", "TestLog: IllegalArgumentException")
                 else -> Log.d("RF", "TestLog: Exception")
             }
-            emit(Resource.error(msg = "Something went wrong!", data = null))
+            emit(Resource.error(msg = Constants.MSG_SOMETHING_WENT_WRONG, data = null))
         }
         .flowOn(Dispatchers.IO)

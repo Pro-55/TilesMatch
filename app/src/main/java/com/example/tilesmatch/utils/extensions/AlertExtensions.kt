@@ -54,14 +54,17 @@ fun AlertDialog.Builder.buildConfirmationDialog(
     val dialog = setView(binding.root).create()
         .apply { window?.decorView?.setBackgroundResource(android.R.color.transparent) }
 
+    var isCancelled = true
     binding.btnPositive.setOnClickListener {
-        positiveButtonClick.invoke(it)
+        isCancelled = false
         dialog.dismiss()
     }
 
-    binding.btnNegative.setOnClickListener {
-        negativeButtonClick.invoke(it)
-        dialog.dismiss()
+    binding.btnNegative.setOnClickListener { dialog.dismiss() }
+
+    dialog.setOnDismissListener {
+        if (isCancelled) negativeButtonClick.invoke(binding.root)
+        else positiveButtonClick.invoke(binding.root)
     }
 
     return dialog

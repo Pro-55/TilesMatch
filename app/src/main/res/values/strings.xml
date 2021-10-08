@@ -10,4 +10,5 @@
     <string name="cd_back_button">Back Button</string>
     <string name="cd_game_tile">Game Tile</string>
     <string name="cd_reset_button">Reset Button</string>
+    <string name="cd_undo_button">Undo Button</string>
 </resources>
