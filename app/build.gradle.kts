@@ -55,20 +55,20 @@ dependencies {
     implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar"))))
 
     // Kotlin
-    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.5.31")
-    implementation("androidx.core:core-ktx:1.6.0")
+    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.6.10")
+    implementation("androidx.core:core-ktx:1.7.0")
 
     // AppCompat
-    implementation("androidx.appcompat:appcompat:1.3.1")
+    implementation("androidx.appcompat:appcompat:1.4.0")
 
     // Material Design Components
     implementation("com.google.android.material:material:1.4.0")
 
     // Constraint Layout
-    implementation("androidx.constraintlayout:constraintlayout:2.1.1")
+    implementation("androidx.constraintlayout:constraintlayout:2.1.2")
 
     // Fragment
-    implementation("androidx.fragment:fragment-ktx:1.3.6")
+    implementation("androidx.fragment:fragment-ktx:1.4.0")
 
     // Navigation Component
     implementation("androidx.navigation:navigation-fragment-ktx:2.3.5")
@@ -83,8 +83,8 @@ dependencies {
     kapt("com.github.bumptech.glide:compiler:4.12.0")
 
     // Coroutines
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.1")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.1")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.2")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.2")
 
     // Hilt DI
     implementation("com.google.dagger:hilt-android:2.38.1")
