@@ -59,13 +59,13 @@ dependencies {
     implementation("androidx.core:core-ktx:1.7.0")
 
     // AppCompat
-    implementation("androidx.appcompat:appcompat:1.4.0")
+    implementation("androidx.appcompat:appcompat:1.4.1")
 
     // Material Design Components
-    implementation("com.google.android.material:material:1.4.0")
+    implementation("com.google.android.material:material:1.5.0")
 
     // Constraint Layout
-    implementation("androidx.constraintlayout:constraintlayout:2.1.2")
+    implementation("androidx.constraintlayout:constraintlayout:2.1.3")
 
     // Fragment
     implementation("androidx.fragment:fragment-ktx:1.4.0")
