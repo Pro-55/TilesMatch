@@ -24,6 +24,7 @@ object TapTargets {
     enum class Type {
         SELECT,
         ASSIST,
+        UNDO,
         RESET
     }
 
@@ -96,6 +97,13 @@ object TapTargets {
                 view = view,
                 title = "The Assist Switch",
                 description = "Turn this on to see the what the final position of the tile should be!"
+            )
+        }
+        Type.UNDO -> {
+            Data(
+                view = view,
+                title = "The Undo Button",
+                description = "We don't always make the best decisions in life. Hit undo, try again!"
             )
         }
         Type.RESET -> {
