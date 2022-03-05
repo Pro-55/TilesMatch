@@ -54,7 +54,7 @@ class OptionsFragment : BaseFragment() {
         if (viewModel.options.value?.data.isNullOrEmpty()) viewModel.getOptions()
 
         viewModel.options
-            .observe(viewLifecycleOwner, { resource -> handleOptionsResource(resource) })
+            .observe(viewLifecycleOwner) { resource -> handleOptionsResource(resource) }
 
         return binding.root
     }
