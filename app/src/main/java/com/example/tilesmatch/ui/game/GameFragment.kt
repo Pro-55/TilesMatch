@@ -71,7 +71,7 @@ class GameFragment : BaseFragment() {
         if (viewModel.tiles.value?.data.isNullOrEmpty()) viewModel.getGameTiles(glide, option)
 
         viewModel.tiles
-            .observe(viewLifecycleOwner, { resource -> handleTilesResource(resource) })
+            .observe(viewLifecycleOwner) { resource -> handleTilesResource(resource) }
 
         return binding.root
     }
