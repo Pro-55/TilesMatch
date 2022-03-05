@@ -68,11 +68,11 @@ dependencies {
     implementation("androidx.constraintlayout:constraintlayout:2.1.3")
 
     // Fragment
-    implementation("androidx.fragment:fragment-ktx:1.4.0")
+    implementation("androidx.fragment:fragment-ktx:1.4.1")
 
     // Navigation Component
-    implementation("androidx.navigation:navigation-fragment-ktx:2.3.5")
-    implementation("androidx.navigation:navigation-ui-ktx:2.3.5")
+    implementation("androidx.navigation:navigation-fragment-ktx:2.4.1")
+    implementation("androidx.navigation:navigation-ui-ktx:2.4.1")
 
     // RecyclerView
     implementation("androidx.recyclerview:recyclerview:1.2.1")
