@@ -66,7 +66,7 @@ class OptionsFragment : BaseFragment() {
             sp.edit().putBoolean(Constants.SHOULD_EXPLAIN_SELECT, false).apply()
             TapTargets.show(
                 requireActivity(),
-                TapTargets.Input(binding.efabSelect, TapTargets.Type.ASSIST)
+                TapTargets.Input(binding.efabSelect, TapTargets.Type.SELECT)
             )
         }
     }

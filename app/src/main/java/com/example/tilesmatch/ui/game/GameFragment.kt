@@ -80,13 +80,18 @@ class GameFragment : BaseFragment() {
         super.onResume()
 
         val shouldExplainAssist = sp.getBoolean(Constants.SHOULD_EXPLAIN_ASSIST, true)
+        val shouldExplainUndo = sp.getBoolean(Constants.SHOULD_EXPLAIN_UNDO, true)
         val shouldExplainReset = sp.getBoolean(Constants.SHOULD_EXPLAIN_RESET, true)
 
-        if (shouldExplainAssist || shouldExplainReset) {
+        if (shouldExplainAssist || shouldExplainUndo || shouldExplainReset) {
             val list = mutableListOf<TapTargets.Input>()
             if (shouldExplainAssist) {
                 sp.edit().putBoolean(Constants.SHOULD_EXPLAIN_ASSIST, false).apply()
                 list.add(TapTargets.Input(binding.switchEnableIds, TapTargets.Type.ASSIST))
+            }
+            if (shouldExplainUndo) {
+                sp.edit().putBoolean(Constants.SHOULD_EXPLAIN_UNDO, false).apply()
+                list.add(TapTargets.Input(binding.imgBtnUndo, TapTargets.Type.UNDO))
             }
             if (shouldExplainReset) {
                 sp.edit().putBoolean(Constants.SHOULD_EXPLAIN_RESET, false).apply()
