@@ -62,7 +62,7 @@ dependencies {
     implementation("androidx.appcompat:appcompat:1.4.1")
 
     // Material Design Components
-    implementation("com.google.android.material:material:1.5.0")
+    implementation("com.google.android.material:material:1.6.0")
 
     // Constraint Layout
     implementation("androidx.constraintlayout:constraintlayout:2.1.3")
@@ -71,8 +71,8 @@ dependencies {
     implementation("androidx.fragment:fragment-ktx:1.4.1")
 
     // Navigation Component
-    implementation("androidx.navigation:navigation-fragment-ktx:2.4.1")
-    implementation("androidx.navigation:navigation-ui-ktx:2.4.1")
+    implementation("androidx.navigation:navigation-fragment-ktx:2.4.2")
+    implementation("androidx.navigation:navigation-ui-ktx:2.4.2")
 
     // RecyclerView
     implementation("androidx.recyclerview:recyclerview:1.2.1")
@@ -87,8 +87,8 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.2")
 
     // Hilt DI
-    implementation("com.google.dagger:hilt-android:2.38.1")
-    kapt("com.google.dagger:hilt-compiler:2.38.1")
+    implementation("com.google.dagger:hilt-android:2.40.1")
+    kapt("com.google.dagger:hilt-compiler:2.40.1")
 
     // Hilt ViewModel
     implementation("androidx.hilt:hilt-lifecycle-viewmodel:1.0.0-alpha03")
