@@ -194,7 +194,7 @@ class GameFragment : BaseFragment() {
      * undo last move
      */
     private fun undoMove() {
-        if (!moves.isNullOrEmpty()) {
+        if (moves.isNotEmpty()) {
             val lastMove = moves.removeAt(moves.size - 1)
             handleUndoButtonState()
             --count
@@ -229,7 +229,7 @@ class GameFragment : BaseFragment() {
      * handle color state of undo button
      */
     private fun handleUndoButtonState() {
-        val isMovesEmpty = moves.isNullOrEmpty()
+        val isMovesEmpty = moves.isEmpty()
         if (canGoBack != isMovesEmpty) canGoBack = isMovesEmpty
         @ColorRes val colorResId =
             if (isMovesEmpty) android.R.color.darker_gray else R.color.textColor

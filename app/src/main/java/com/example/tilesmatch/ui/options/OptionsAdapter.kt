@@ -32,7 +32,7 @@ class OptionsAdapter(
         holder.bind(getItem(position))
 
     /**
-     * sets adapter listner
+     * sets adapter listener
      */
     fun setListener(listener: Listener?) {
         this.listener = listener
