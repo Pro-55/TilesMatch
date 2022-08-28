@@ -10,14 +10,14 @@ plugins {
 }
 
 android {
-    compileSdk = 31
+    compileSdk = 33
     buildFeatures {
         dataBinding = true
     }
     defaultConfig {
         applicationId = "com.example.tilesmatch"
         minSdk = 21
-        targetSdk = 31
+        targetSdk = 33
         versionCode = 1
         versionName = "1.0"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
@@ -55,11 +55,11 @@ dependencies {
     implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar"))))
 
     // Kotlin
-    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.6.21")
+    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.7.0")
     implementation("androidx.core:core-ktx:1.8.0")
 
     // AppCompat
-    implementation("androidx.appcompat:appcompat:1.4.2")
+    implementation("androidx.appcompat:appcompat:1.5.0")
 
     // Material Design Components
     implementation("com.google.android.material:material:1.6.1")
@@ -68,11 +68,11 @@ dependencies {
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
 
     // Fragment
-    implementation("androidx.fragment:fragment-ktx:1.5.0")
+    implementation("androidx.fragment:fragment-ktx:1.5.2")
 
     // Navigation Component
-    implementation("androidx.navigation:navigation-fragment-ktx:2.5.0")
-    implementation("androidx.navigation:navigation-ui-ktx:2.5.0")
+    implementation("androidx.navigation:navigation-fragment-ktx:2.5.1")
+    implementation("androidx.navigation:navigation-ui-ktx:2.5.1")
 
     // RecyclerView
     implementation("androidx.recyclerview:recyclerview:1.2.1")
