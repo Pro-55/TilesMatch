@@ -5,10 +5,10 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath("com.android.tools.build:gradle:7.2.2")
-        classpath(kotlin(module = "gradle-plugin", version = "1.6.10"))
-        classpath("androidx.navigation:navigation-safe-args-gradle-plugin:2.5.1")
-        classpath("com.google.dagger:hilt-android-gradle-plugin:2.40.1")
+        classpath("com.android.tools.build:gradle:7.3.0")
+        classpath(kotlin(module = "gradle-plugin", version = "1.7.10"))
+        classpath("androidx.navigation:navigation-safe-args-gradle-plugin:2.5.2")
+        classpath("com.google.dagger:hilt-android-gradle-plugin:2.43.2")
     }
 }
 
