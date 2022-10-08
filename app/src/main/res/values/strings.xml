@@ -5,7 +5,7 @@
 
     <string name="btn_select">Select</string>
 
-    <string name="cd_select_button">Select Button</string>
+    <string name="cd_settings_button">Settings Button</string>
     <string name="cd_option_item">Option Item</string>
     <string name="cd_back_button">Back Button</string>
     <string name="cd_game_tile">Game Tile</string>
