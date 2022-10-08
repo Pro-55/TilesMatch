@@ -1,13 +1,9 @@
 package com.example.tilesmatch.utils.extensions
 
-import android.view.LayoutInflater
-import android.view.View
-import androidx.appcompat.app.AlertDialog
-import androidx.databinding.DataBindingUtil
+import androidx.annotation.DrawableRes
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
-import com.example.tilesmatch.R
-import com.example.tilesmatch.databinding.LayoutConfirmationDialogBinding
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 
 /**
@@ -27,9 +23,10 @@ fun FragmentActivity.showShortSnackBar(message: String) {
 }
 
 /**
- * build confirmation dialog with given param
+ * shows confirmation dialog with given param
  *
- * @param inflater instance of layout inflater
+ * @param icon icon to be displayed on the dialog
+ * @param title title to be displayed on the dialog
  * @param message message to be displayed on the dialog
  * @param positiveButton positive button text
  * @param negativeButton negative button text
@@ -37,35 +34,20 @@ fun FragmentActivity.showShortSnackBar(message: String) {
  * @param negativeButtonClick negative button action
  * @return instance of alter dialog
  */
-fun AlertDialog.Builder.buildConfirmationDialog(
-    inflater: LayoutInflater,
+fun FragmentActivity.showConfirmationDialog(
+    @DrawableRes icon: Int,
+    title: String,
     message: String,
     positiveButton: String = "Yes",
     negativeButton: String = "No",
-    positiveButtonClick: (view: View) -> Unit = { },
-    negativeButtonClick: (view: View) -> Unit = { }
-): AlertDialog {
-    val binding: LayoutConfirmationDialogBinding =
-        DataBindingUtil.inflate(inflater, R.layout.layout_confirmation_dialog, null, false)
-    binding.txtDialogMsg.text = message
-    binding.btnPositive.text = positiveButton
-    binding.btnNegative.text = negativeButton
-
-    val dialog = setView(binding.root).create()
-        .apply { window?.decorView?.setBackgroundResource(android.R.color.transparent) }
-
-    var isCancelled = true
-    binding.btnPositive.setOnClickListener {
-        isCancelled = false
-        dialog.dismiss()
-    }
-
-    binding.btnNegative.setOnClickListener { dialog.dismiss() }
-
-    dialog.setOnDismissListener {
-        if (isCancelled) negativeButtonClick.invoke(binding.root)
-        else positiveButtonClick.invoke(binding.root)
-    }
-
-    return dialog
+    positiveButtonClick: () -> Unit = { },
+    negativeButtonClick: () -> Unit = { }
+) {
+    MaterialAlertDialogBuilder(this)
+        .setIcon(icon)
+        .setTitle(title)
+        .setMessage(message)
+        .setPositiveButton(positiveButton) { _, _ -> positiveButtonClick.invoke() }
+        .setNegativeButton(negativeButton) { _, _ -> negativeButtonClick.invoke() }
+        .show()
 }
