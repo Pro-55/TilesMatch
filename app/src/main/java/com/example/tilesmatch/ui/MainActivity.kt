@@ -8,6 +8,7 @@ import androidx.core.view.WindowInsetsControllerCompat
 import androidx.databinding.DataBindingUtil
 import com.example.tilesmatch.R
 import com.example.tilesmatch.databinding.ActivityMainBinding
+import com.example.tilesmatch.utils.extensions.getColorFromAttr
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -19,7 +20,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            val colorBackground = resources.getColor(R.color.color_background, null)
+            val colorBackground = getColorFromAttr(R.attr.colorSurface)
             window.statusBarColor = colorBackground
             window.navigationBarColor = colorBackground
             val isNightMode =

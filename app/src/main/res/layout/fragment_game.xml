@@ -37,6 +37,7 @@
                     android:layout_height="match_parent"
                     android:gravity="center_vertical"
                     android:singleLine="true"
+                    android:textColor="?attr/colorOnSurface"
                     android:textSize="@dimen/dimen_20sp"
                     android:textStyle="bold"
                     app:layout_constrainedWidth="true"
@@ -44,7 +45,7 @@
                     app:layout_constraintStart_toEndOf="@id/img_btn_back"
                     tool:text="Catto" />
 
-                <com.google.android.material.switchmaterial.SwitchMaterial
+                <com.google.android.material.materialswitch.MaterialSwitch
                     android:id="@+id/switch_enable_ids"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
@@ -61,8 +62,7 @@
                     android:src="@drawable/ic_undo"
                     app:layout_constraintDimensionRatio="H,1:1"
                     app:layout_constraintEnd_toStartOf="@id/img_btn_reset"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:tint="@android:color/darker_gray" />
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <ImageView
                     android:id="@+id/img_btn_reset"
@@ -102,6 +102,7 @@
             android:layout_marginHorizontal="@dimen/activity_default_margin"
             android:layout_marginTop="@dimen/activity_default_margin"
             android:layout_marginBottom="@dimen/dimen_8dp"
+            android:textColor="?attr/colorOnSurface"
             android:textSize="@dimen/dimen_20sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"

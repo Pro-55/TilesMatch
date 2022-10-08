@@ -5,9 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.annotation.ColorRes
-import androidx.appcompat.app.AlertDialog
-import androidx.core.content.ContextCompat
+import androidx.annotation.AttrRes
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
@@ -19,13 +17,16 @@ import com.example.tilesmatch.framework.BaseFragment
 import com.example.tilesmatch.models.*
 import com.example.tilesmatch.utils.Constants
 import com.example.tilesmatch.utils.TapTargets
-import com.example.tilesmatch.utils.extensions.buildConfirmationDialog
+import com.example.tilesmatch.utils.extensions.getColorFromAttr
 import com.example.tilesmatch.utils.extensions.glide
+import com.example.tilesmatch.utils.extensions.showConfirmationDialog
 import com.example.tilesmatch.utils.extensions.showShortSnackBar
 import com.example.tilesmatch.utils.helpers.MoveHelperUtils
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 import kotlin.properties.Delegates
+
 
 @AndroidEntryPoint
 class GameFragment : BaseFragment() {
@@ -140,14 +141,13 @@ class GameFragment : BaseFragment() {
      */
     private fun validateState() {
         if (isValid()) {
-            val dialog = AlertDialog.Builder(requireContext())
-                .buildConfirmationDialog(
-                    inflater = layoutInflater,
-                    message = "Congratulations!\nYou Solved ${option?.title ?: "The Puzzle"} in $count Moves!\nWanna go again?",
-                    positiveButtonClick = { resetGameTiles() },
-                    negativeButtonClick = { this.onBackPressed() }
-                )
-            dialog.show()
+            requireActivity().showConfirmationDialog(
+                icon = R.drawable.ic_celebration,
+                title = "Congratulations!",
+                message = "You Solved ${option?.title ?: "The Puzzle"} in $count Moves!\nWanna go again?",
+                positiveButtonClick = { resetGameTiles() },
+                negativeButtonClick = { this.onBackPressed() }
+            )
         }
     }
 
@@ -231,28 +231,23 @@ class GameFragment : BaseFragment() {
     private fun handleUndoButtonState() {
         val isMovesEmpty = moves.isEmpty()
         if (canGoBack != isMovesEmpty) canGoBack = isMovesEmpty
-        @ColorRes val colorResId =
-            if (isMovesEmpty) android.R.color.darker_gray else R.color.textColor
-        binding.imgBtnUndo.setColorFilter(
-            ContextCompat.getColor(requireContext(), colorResId),
-            android.graphics.PorterDuff.Mode.SRC_IN
-        )
+        @AttrRes val colorResId = if (isMovesEmpty) R.attr.colorOutline else R.attr.colorOnSurface
+        binding.imgBtnUndo.setColorFilter(requireContext().getColorFromAttr(colorResId))
     }
 
     /**
      * show confirmation dialog before going back to the previous screen
      */
     private fun confirmBack() {
-        val dialog = AlertDialog.Builder(requireContext())
-            .buildConfirmationDialog(
-                inflater = layoutInflater,
-                message = "All Your Progress Will Be Lost!\nSure You Want To Go Back?",
-                positiveButtonClick = {
-                    canGoBack = true
-                    this.onBackPressed()
-                }
-            )
-        dialog.show()
+        requireActivity().showConfirmationDialog(
+            icon = R.drawable.ic_warning,
+            title = "Warning!",
+            message = "All Your Progress Will Be Lost!\nSure You Want To Go Back?",
+            positiveButtonClick = {
+                canGoBack = true
+                this.onBackPressed()
+            }
+        )
     }
 
     override fun onBackPressed() {
