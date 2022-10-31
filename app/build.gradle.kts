@@ -10,12 +10,12 @@ plugins {
 }
 
 android {
+    namespace = "com.example.tilesmatch"
     compileSdk = 33
     buildFeatures {
         dataBinding = true
     }
     defaultConfig {
-        applicationId = "com.example.tilesmatch"
         minSdk = 21
         targetSdk = 33
         versionCode = 1
