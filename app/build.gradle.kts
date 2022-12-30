@@ -55,20 +55,20 @@ dependencies {
     implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar"))))
 
     // Kotlin
-    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.7.10")
+    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.7.20")
     implementation("androidx.core:core-ktx:1.9.0")
 
     // AppCompat
     implementation("androidx.appcompat:appcompat:1.5.1")
 
     // Material Design Components
-    implementation("com.google.android.material:material:1.8.0-alpha02")
+    implementation("com.google.android.material:material:1.8.0-beta01")
 
     // Constraint Layout
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
 
     // Fragment
-    implementation("androidx.fragment:fragment-ktx:1.5.4")
+    implementation("androidx.fragment:fragment-ktx:1.5.5")
 
     // Navigation Component
     implementation("androidx.navigation:navigation-fragment-ktx:2.5.3")
