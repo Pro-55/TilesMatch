@@ -14,7 +14,11 @@ import com.example.tilesmatch.data.viewmodel.MainViewModel
 import com.example.tilesmatch.databinding.FragmentGameBinding
 import com.example.tilesmatch.enums.MoveDirection
 import com.example.tilesmatch.framework.BaseFragment
-import com.example.tilesmatch.models.*
+import com.example.tilesmatch.models.Move
+import com.example.tilesmatch.models.Option
+import com.example.tilesmatch.models.Resource
+import com.example.tilesmatch.models.Status
+import com.example.tilesmatch.models.Tile
 import com.example.tilesmatch.utils.Constants
 import com.example.tilesmatch.utils.TapTargets
 import com.example.tilesmatch.utils.extensions.getColorFromAttr
@@ -22,7 +26,6 @@ import com.example.tilesmatch.utils.extensions.glide
 import com.example.tilesmatch.utils.extensions.showConfirmationDialog
 import com.example.tilesmatch.utils.extensions.showShortSnackBar
 import com.example.tilesmatch.utils.helpers.MoveHelperUtils
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 import kotlin.properties.Delegates
