@@ -29,6 +29,7 @@ import com.example.tilesmatch.utils.helpers.MoveHelperUtils
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 import kotlin.properties.Delegates
+import com.google.android.material.R as mR
 
 
 @AndroidEntryPoint
@@ -234,7 +235,7 @@ class GameFragment : BaseFragment() {
     private fun handleUndoButtonState() {
         val isMovesEmpty = moves.isEmpty()
         if (canGoBack != isMovesEmpty) canGoBack = isMovesEmpty
-        @AttrRes val colorResId = if (isMovesEmpty) R.attr.colorOutline else R.attr.colorOnSurface
+        @AttrRes val colorResId = if (isMovesEmpty) mR.attr.colorOutline else mR.attr.colorOnSurface
         binding.imgBtnUndo.setColorFilter(requireContext().getColorFromAttr(colorResId))
     }
 

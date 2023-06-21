@@ -8,6 +8,7 @@ import com.example.tilesmatch.utils.extensions.getColorFromAttr
 import com.getkeepsafe.taptargetview.TapTarget
 import com.getkeepsafe.taptargetview.TapTargetSequence
 import com.getkeepsafe.taptargetview.TapTargetView
+import com.google.android.material.R as mR
 
 object TapTargets {
 
@@ -44,8 +45,8 @@ object TapTargets {
             activity,
             TapTarget.forView(data.view, data.title, data.description)
                 .transparentTarget(true)
-                .textColorInt(activity.getColorFromAttr(R.attr.colorSurface))
-                .outerCircleColorInt(activity.getColorFromAttr(R.attr.colorPrimary))
+                .textColorInt(activity.getColorFromAttr(mR.attr.colorSurface))
+                .outerCircleColorInt(activity.getColorFromAttr(androidx.appcompat.R.attr.colorPrimary))
                 .textTypeface(ResourcesCompat.getFont(activity, R.font.jet_brains_mono_regular))
                 .cancelable(true)
         )
@@ -65,8 +66,8 @@ object TapTargets {
             val data = build(it.type, it.view)
             TapTarget.forView(data.view, data.title, data.description)
                 .transparentTarget(true)
-                .textColorInt(activity.getColorFromAttr(R.attr.colorSurface))
-                .outerCircleColorInt(activity.getColorFromAttr(R.attr.colorPrimary))
+                .textColorInt(activity.getColorFromAttr(mR.attr.colorSurface))
+                .outerCircleColorInt(activity.getColorFromAttr(androidx.appcompat.R.attr.colorPrimary))
                 .textTypeface(ResourcesCompat.getFont(activity, R.font.jet_brains_mono_regular))
                 .cancelable(true)
         }
