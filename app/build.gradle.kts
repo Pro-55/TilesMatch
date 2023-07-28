@@ -11,13 +11,13 @@ plugins {
 
 android {
     namespace = "com.example.tilesmatch"
-    compileSdk = 33
+    compileSdk = 34
     dataBinding {
         enable = true
     }
     defaultConfig {
         minSdk = 21
-        targetSdk = 33
+        targetSdk = 34
         versionCode = 1
         versionName = "1.0"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
@@ -68,14 +68,14 @@ dependencies {
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
 
     // Fragment
-    implementation("androidx.fragment:fragment-ktx:1.6.0")
+    implementation("androidx.fragment:fragment-ktx:1.6.1")
 
     // Navigation Component
     implementation("androidx.navigation:navigation-fragment-ktx:2.6.0")
     implementation("androidx.navigation:navigation-ui-ktx:2.6.0")
 
     // RecyclerView
-    implementation("androidx.recyclerview:recyclerview:1.3.0")
+    implementation("androidx.recyclerview:recyclerview:1.3.1")
 
     // Glide
     implementation("com.github.bumptech.glide:glide:4.12.0")
