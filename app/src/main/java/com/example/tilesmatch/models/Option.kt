@@ -15,9 +15,7 @@ data class Option(
 
         if (_id != other._id) return false
         if (title != other.title) return false
-        if (url != other.url) return false
-
-        return true
+        return url == other.url
     }
 
     override fun hashCode(): Int {
