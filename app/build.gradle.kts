@@ -1,30 +1,30 @@
 plugins {
-    apply {
-        id("com.android.application")
-        kotlin("android")
-        kotlin("kapt")
-        id("org.jetbrains.kotlin.plugin.parcelize")
-        id("androidx.navigation.safeargs")
-        id("dagger.hilt.android.plugin")
-    }
+    alias(libs.plugins.android.gradle)
+    alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.ksp)
+    alias(libs.plugins.kotlin.parcelize)
+    alias(libs.plugins.navigation.safeargs)
+    alias(libs.plugins.hilt)
 }
 
 android {
     namespace = "com.example.tilesmatch"
-    compileSdk = 34
+    compileSdk = libs.versions.compileSdk.get().toInt()
+    defaultConfig {
+        minSdk = libs.versions.minSdk.get().toInt()
+        targetSdk = libs.versions.targetSdk.get().toInt()
+        versionCode = getVersionCode()
+        versionName = getVersionName()
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+    }
     dataBinding {
         enable = true
     }
-    defaultConfig {
-        minSdk = 21
-        targetSdk = 34
-        versionCode = 1
-        versionName = "1.0"
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+    buildFeatures {
+        buildConfig = true
     }
-
     buildTypes {
-        getByName("debug") {
+        debug {
             applicationIdSuffix = ".debug"
             isMinifyEnabled = false
             isShrinkResources = false
@@ -33,7 +33,7 @@ android {
                 "proguard-rules.pro"
             )
         }
-        getByName("release") {
+        release {
             isMinifyEnabled = true
             isShrinkResources = true
             proguardFiles(
@@ -43,11 +43,11 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
+        sourceCompatibility = getJavaVersion()
+        targetCompatibility = getJavaVersion()
     }
     kotlinOptions {
-        jvmTarget = JavaVersion.VERSION_17.toString()
+        jvmTarget = getJavaVersion().toString()
     }
 }
 
@@ -55,49 +55,64 @@ dependencies {
     implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar"))))
 
     // Kotlin
-    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.8.21")
-    implementation("androidx.core:core-ktx:1.10.1")
+    implementation(libs.kotlin.stdlib.jdk7)
+    implementation(libs.androidx.core)
 
     // AppCompat
-    implementation("androidx.appcompat:appcompat:1.6.1")
+    implementation(libs.androidx.appcompat)
 
     // Material Design Components
-    implementation("com.google.android.material:material:1.9.0")
+    implementation(libs.material)
 
     // Constraint Layout
-    implementation("androidx.constraintlayout:constraintlayout:2.1.4")
+    implementation(libs.androidx.constraintlayout)
 
     // Fragment
-    implementation("androidx.fragment:fragment-ktx:1.6.1")
+    implementation(libs.androidx.fragment)
 
     // Navigation Component
-    implementation("androidx.navigation:navigation-fragment-ktx:2.6.0")
-    implementation("androidx.navigation:navigation-ui-ktx:2.6.0")
+    implementation(libs.androidx.navigation.fragment)
+    implementation(libs.androidx.navigation.ui)
 
     // RecyclerView
-    implementation("androidx.recyclerview:recyclerview:1.3.1")
+    implementation(libs.androidx.recyclerview)
 
     // Glide
-    implementation("com.github.bumptech.glide:glide:4.12.0")
-    implementation("androidx.legacy:legacy-support-v4:1.0.0")
-    kapt("com.github.bumptech.glide:compiler:4.12.0")
+    implementation(libs.glide)
+    ksp(libs.glide.compiler)
 
     // Coroutines
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4")
+    implementation(libs.kotlinx.coroutines.core)
+    implementation(libs.kotlinx.coroutines.android)
 
     // Hilt DI
-    implementation("com.google.dagger:hilt-android:2.43.2")
-    kapt("com.google.dagger:hilt-compiler:2.43.2")
+    implementation(libs.hilt.android)
+    ksp(libs.hilt.compiler)
 
     // Gson
-    implementation("com.google.code.gson:gson:2.9.0")
+    implementation(libs.gson)
 
     // TapTargetView
-    implementation("com.getkeepsafe.taptargetview:taptargetview:1.13.3")
+    implementation(libs.taptargetview)
 
     // Test
-    testImplementation("junit:junit:4.13.2")
-    androidTestImplementation("androidx.test.ext:junit:1.1.5")
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
+    testImplementation(libs.junit)
+    androidTestImplementation(libs.androidx.runner)
+    androidTestImplementation(libs.androidx.espresso.core)
 }
+
+fun getVersionCode(): Int {
+    val major = libs.versions.major.get().toInt() * 100000
+    val minor = libs.versions.minor.get().toInt() * 100
+    val hotfix = libs.versions.hotfix.get().toInt()
+    return 100000000 + major + minor + hotfix
+}
+
+fun getVersionName(): String {
+    val major = libs.versions.major.get()
+    val minor = libs.versions.minor.get()
+    val hotfix = libs.versions.hotfix.get()
+    return "$major.$minor.$hotfix"
+}
+
+fun getJavaVersion(): JavaVersion = JavaVersion.VERSION_17
