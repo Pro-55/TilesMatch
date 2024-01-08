@@ -13,9 +13,7 @@ data class Tile(
 
         if (_id != other._id) return false
         if (bitmap != other.bitmap) return false
-        if (shouldShowId != other.shouldShowId) return false
-
-        return true
+        return shouldShowId == other.shouldShowId
     }
 
     override fun hashCode(): Int {
