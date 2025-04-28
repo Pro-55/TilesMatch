@@ -8,7 +8,7 @@ plugins {
 }
 
 android {
-    namespace = "com.example.tilesmatch"
+    namespace = "com.papslabs.tilesmatch"
     compileSdk = libs.versions.compileSdk.get().toInt()
     defaultConfig {
         minSdk = libs.versions.minSdk.get().toInt()

@@ -1,6 +1,6 @@
 ### Classes
--keep class com.example.tilesmatch.models.** { *; }
--keepnames class com.example.tilesmatch.util.** { *; }
+-keep class com.papslabs.tilesmatch.models.** { *; }
+-keepnames class com.papslabs.tilesmatch.util.** { *; }
 -keepnames class **.*Fragment*
 
 ### Glide
