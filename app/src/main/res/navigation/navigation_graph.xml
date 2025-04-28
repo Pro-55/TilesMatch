@@ -6,7 +6,7 @@
     app:startDestination="@id/optionsFragment">
     <fragment
         android:id="@+id/optionsFragment"
-        android:name="com.example.tilesmatch.ui.options.OptionsFragment"
+        android:name="com.papslabs.tilesmatch.ui.options.OptionsFragment"
         android:label="OptionsFragment"
         tools:layout="@layout/fragment_options">
         <action
@@ -19,11 +19,11 @@
     </fragment>
     <fragment
         android:id="@+id/gameFragment"
-        android:name="com.example.tilesmatch.ui.game.GameFragment"
+        android:name="com.papslabs.tilesmatch.ui.game.GameFragment"
         android:label="GameFragment"
         tools:layout="@layout/fragment_game">
         <argument
             android:name="option"
-            app:argType="com.example.tilesmatch.models.Option" />
+            app:argType="com.papslabs.tilesmatch.models.Option" />
     </fragment>
 </navigation>
