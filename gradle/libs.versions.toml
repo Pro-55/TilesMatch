@@ -1,8 +1,8 @@
 [versions]
 ## SDK Versions
-compileSdk = "35"
-minSdk = "23"
-targetSdk = "35"
+compileSdk = "37"
+minSdk = "26"
+targetSdk = "37"
 
 ## App Versions
 major = "1"
@@ -10,42 +10,40 @@ minor = "0"
 hotfix = "0"
 
 ## Gradle
-androidGradlePlugin = "8.9.2"
-hilt = "2.56.2"
-kotlin = "2.1.20"
-ksp = "2.1.20-1.0.32"
-safeargs = "2.8.9"
+androidGradlePlugin = "9.2.1"
+hilt = "2.60"
+kotlin = "2.4.0"
+ksp = "2.3.9"
+safeargs = "2.9.8"
 
 # Dependencies
-androidXCore = "1.16.0"
-androidXAppCompat = "1.7.0"
+androidXAppCompat = "1.7.1"
 androidXConstraintLayout = "2.2.1"
+androidXCore = "1.19.0"
+androidXFragment = "1.8.9"
+androidXNavigation = "2.9.8"
 androidXRecyclerView = "1.4.0"
-androidXFragment = "1.8.6"
-androidXNavigation = "2.8.9"
-glide = "4.16.0"
-gson = "2.13.1"
-kotlinX = "1.10.2"
-material = "1.12.0"
-taptargetview="1.15.0"
+glide = "5.0.7"
+gson = "2.14.0"
+kotlinX = "1.11.0"
+material = "1.14.0"
+taptargetview = "1.15.0"
+
+espresso = "3.7.0"
 junit = "4.13.2"
-runner = "1.6.2"
-espresso = "3.6.1"
+runner = "1.7.0"
 
 [libraries]
-androidx-core = { module = "androidx.core:core-ktx", version.ref = "androidXCore" }
-
 androidx-appcompat = { module = "androidx.appcompat:appcompat", version.ref = "androidXAppCompat" }
-
 androidx-constraintlayout = { module = "androidx.constraintlayout:constraintlayout", version.ref = "androidXConstraintLayout" }
-androidx-recyclerview = { module = "androidx.recyclerview:recyclerview", version.ref = "androidXRecyclerView" }
-
+androidx-core = { module = "androidx.core:core-ktx", version.ref = "androidXCore" }
 androidx-fragment = { module = "androidx.fragment:fragment-ktx", version.ref = "androidXFragment" }
 androidx-navigation-fragment = { module = "androidx.navigation:navigation-fragment-ktx", version.ref = "androidXNavigation" }
 androidx-navigation-ui = { module = "androidx.navigation:navigation-ui-ktx", version.ref = "androidXNavigation" }
+androidx-recyclerview = { module = "androidx.recyclerview:recyclerview", version.ref = "androidXRecyclerView" }
 
-androidx-runner = { module = "androidx.test:runner", version.ref = "runner" }
 androidx-espresso-core = { module = "androidx.test.espresso:espresso-core", version.ref = "espresso" }
+androidx-runner = { module = "androidx.test:runner", version.ref = "runner" }
 
 glide = { module = "com.github.bumptech.glide:glide", version.ref = "glide" }
 glide-compiler = { module = "com.github.bumptech.glide:compiler", version.ref = "glide" }
@@ -56,8 +54,6 @@ hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "hilt"
 hilt-compiler = { module = "com.google.dagger:hilt-compiler", version.ref = "hilt" }
 
 junit = { module = "junit:junit", version.ref = "junit" }
-
-kotlin-stdlib-jdk7 = { module = "org.jetbrains.kotlin:kotlin-stdlib-jdk7", version.ref = "kotlin" }
 
 kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinX" }
 kotlinx-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "kotlinX" }
@@ -71,7 +67,6 @@ android-gradle = { id = "com.android.application", version.ref = "androidGradleP
 
 hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
 
-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-parcelize = { id = "org.jetbrains.kotlin.plugin.parcelize", version.ref = "kotlin" }
 
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
