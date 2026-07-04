@@ -1,6 +1,5 @@
 plugins {
     alias(libs.plugins.android.gradle)
-    alias(libs.plugins.kotlin.android)
     alias(libs.plugins.ksp)
     alias(libs.plugins.kotlin.parcelize)
     alias(libs.plugins.navigation.safeargs)
@@ -17,10 +16,8 @@ android {
         versionName = getVersionName()
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
-    dataBinding {
-        enable = true
-    }
     buildFeatures {
+        dataBinding = true
         buildConfig = true
     }
     signingConfigs {
@@ -36,7 +33,6 @@ android {
             applicationIdSuffix = ".debug"
             signingConfig = signingConfigs.getByName("config")
             isMinifyEnabled = false
-            isShrinkResources = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
@@ -56,16 +52,12 @@ android {
         sourceCompatibility = getJavaVersion()
         targetCompatibility = getJavaVersion()
     }
-    kotlinOptions {
-        jvmTarget = getJavaVersion().toString()
-    }
 }
 
 dependencies {
     implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar"))))
 
     // Kotlin
-    implementation(libs.kotlin.stdlib.jdk7)
     implementation(libs.androidx.core)
 
     // AppCompat
@@ -125,4 +117,4 @@ fun getVersionName(): String {
     return "$major.$minor.$hotfix"
 }
 
-fun getJavaVersion(): JavaVersion = JavaVersion.VERSION_17
+fun getJavaVersion(): JavaVersion = JavaVersion.VERSION_21

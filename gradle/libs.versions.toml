@@ -55,8 +55,6 @@ hilt-compiler = { module = "com.google.dagger:hilt-compiler", version.ref = "hil
 
 junit = { module = "junit:junit", version.ref = "junit" }
 
-kotlin-stdlib-jdk7 = { module = "org.jetbrains.kotlin:kotlin-stdlib-jdk7", version.ref = "kotlin" }
-
 kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinX" }
 kotlinx-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "kotlinX" }
 
@@ -69,7 +67,6 @@ android-gradle = { id = "com.android.application", version.ref = "androidGradleP
 
 hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
 
-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-parcelize = { id = "org.jetbrains.kotlin.plugin.parcelize", version.ref = "kotlin" }
 
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
